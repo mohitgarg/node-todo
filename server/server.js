@@ -19,3 +19,5 @@ app.post('/todos', (req, res) => {
 app.listen(port, () => {
   console.log(`App is running on ${port}`)
 })
+
+export default app
