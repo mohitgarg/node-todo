@@ -7,9 +7,13 @@
   "author": "Mohit Garg <gargmohit@live.in>",
   "license": "MIT",
   "scripts": {
+    "start":"babel-node server/server.js",
     "dev": "nodemon --exec babel-node server/server.js",
     "test": "mocha  --compilers js:babel-core/register server/**/*.test.js",
     "test-watch": "nodemon --exec yarn run test"
+  },
+  "engines":{
+    "node":"7.10.0"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
