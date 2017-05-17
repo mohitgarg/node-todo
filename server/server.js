@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import { mongoose } from './db/mongoose'
 import Todo from './models/todo'
 import User from './models/users'
+import { ObjectID } from 'mongodb'
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -27,6 +28,21 @@ app.get('/todos', (req, res) => {
       res.status(400).send(err)
     }
   )
+})
+
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  if (!ObjectID.isValid(id)) {
+    res.status(404).send()
+  }
+  Todo.findById(id)
+    .then(todo => {
+      if (!todo) {
+        return res.status(404).send()
+      }
+      res.send({ todo })
+    })
+    .catch(err => res.status(404).send(err))
 })
 
 app.listen(port, () => {
