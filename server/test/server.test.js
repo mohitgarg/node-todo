@@ -1,13 +1,22 @@
 import expect from 'expect'
 import request from 'supertest'
 import chalk from 'chalk'
-
+import { ObjectID } from 'mongodb'
 import app from '../server'
 import Todo from '../models/todo'
 
 console.log(chalk.green('Wiping the database before running the test'))
 
-const todos = [{ text: 'First Test Todo' }, { text: 'Second Text Todo' }]
+const todos = [
+  {
+    _id: new ObjectID(),
+    text: 'First Test Todo'
+  },
+  {
+    _id: new ObjectID(),
+    text: 'Second Text Todo'
+  }
+]
 
 beforeEach(done => {
   Todo.remove({})
@@ -66,5 +75,25 @@ describe('GET /todos', () => {
         expect(res.body.todos.length).toBe(2)
       })
       .end(done)
+  })
+})
+
+describe('GET /todos/:id', () => {
+  it('Should return the todo Object', done => {
+    request(app)
+      .get(`/todos/${todos[0]._id.toHexString()}`)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.text).toBe(todos[0].text)
+      })
+      .end(done)
+  })
+
+  it('Should return 404 if todo not found', done => {
+    const hexID = new ObjectID().toHexString()
+    request(app).get(`/todos/${hexID}`).expect(404).end(done)
+  })
+  it("Should return a 404 back for non object ID's", done => {
+    request(app).get(`/todos/123`).expect(404).end(done)
   })
 })
