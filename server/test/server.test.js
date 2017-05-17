@@ -14,7 +14,9 @@ const todos = [
   },
   {
     _id: new ObjectID(),
-    text: 'Second Text Todo'
+    text: 'Second Text Todo',
+    completed: true,
+    completedOn: 123456
   }
 ]
 
@@ -66,7 +68,7 @@ describe('POST /todos', () => {
     })
   })
 })
-describe('GET /todos', () => {
+describe('GET /todos 😄', () => {
   it('Should show all the todos', done => {
     request(app)
       .get('/todos')
@@ -125,5 +127,36 @@ describe('DELETE /todos/:id', () => {
   })
   it("Should return a 404 back for non object ID's", done => {
     request(app).delete(`/todos/123`).expect(404).end(done)
+  })
+})
+
+describe('PATCH /todos/:id', () => {
+  it('Should update the todo', done => {
+    const hexID = todos[0]._id.toHexString()
+    const text = 'Hello from Supertest'
+    request(app)
+      .patch(`/todos/${hexID}`)
+      .send({ text, completed: true })
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.completedOn).toBeA('number')
+        expect(res.body.todo.completed).toBe(true)
+        expect(res.body.todo.text).toBe(text)
+      })
+      .end(done)
+  })
+  it('Should clear completedAt when todo is not completed 😝', done => {
+    const hexID = todos[0]._id.toHexString()
+    const text = 'Hello from Supertest'
+    request(app)
+      .patch(`/todos/${hexID}`)
+      .send({ text, completed: false })
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.completedOn).toNotExist()
+        expect(res.body.todo.completed).toBe(false)
+        expect(res.body.todo.text).toBe(text)
+      })
+      .end(done)
   })
 })
