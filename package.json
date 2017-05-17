@@ -13,7 +13,8 @@
     "test-watch": "nodemon --exec yarn run test"
   },
   "engines":{
-    "node":"7.10.0"
+    "node":"7.10.0",
+    "yarn":"0.24.4"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
