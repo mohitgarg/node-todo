@@ -7,18 +7,19 @@
   "author": "Mohit Garg <gargmohit@live.in>",
   "license": "MIT",
   "scripts": {
-    "start":"babel-node server/server.js",
+    "start": "babel-node server/server.js",
     "dev": "nodemon --exec babel-node server/server.js",
     "test": "mocha  --compilers js:babel-core/register server/**/*.test.js",
     "test-watch": "nodemon --exec yarn run test"
   },
-  "engines":{
-    "node":"7.10.0",
-    "yarn":"0.24.4"
+  "engines": {
+    "node": "7.10.0",
+    "yarn": "0.24.4"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "lodash": "^4.17.4",
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.9"
   },
