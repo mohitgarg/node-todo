@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { mongoose } from './db/mongoose'
 import Todo from './models/todo'
-import User from './models/users'
+// import User from './models/users'
 import { ObjectID } from 'mongodb'
 
 const app = express()
