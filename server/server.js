@@ -3,11 +3,22 @@ import bodyParser from 'body-parser'
 import { mongoose } from './db/mongoose'
 import Todo from './models/todo'
 import _ from 'lodash'
-// import User from './models/users'
+import User from './models/users'
 import { ObjectID } from 'mongodb'
 
+const env = process.env.NODE_ENV || 'development'
+console.log('***********', env)
+
+if (env === 'development') {
+  process.env.PORT = 3000
+  process.env.MONGODB_URI = 'mongodb://localhost:27017/mohit-todo'
+} else if (env === 'test') {
+  process.env.PORT = 3000
+  process.env.MONGODB_URI = 'mongodb://localhost:27017/mohit-todo-test'
+}
+
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -86,6 +97,15 @@ app.patch('/todos/:id', (req, res) => {
       res.send({ todo })
     })
     .catch(e => res.status(400).send())
+})
+
+// POST User
+app.post('/users', (req, res) => {
+  const body = _.pick(req.body, ['email', 'password'])
+  const user = new User(body)
+  user.save().then(() => user.generateAuthToken()).then(token => {
+    res.header('x-auth', token).send(user)
+  })
 })
 
 app.listen(port, () => {

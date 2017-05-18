@@ -9,7 +9,7 @@
   "scripts": {
     "start": "babel-node server/server.js",
     "dev": "nodemon --exec babel-node server/server.js",
-    "test": "mocha  --compilers js:babel-core/register server/**/*.test.js",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha  --compilers js:babel-core/register server/**/*.test.js",
     "test-watch": "nodemon --exec yarn run test"
   },
   "engines": {
@@ -19,9 +19,11 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.26",
-    "mongoose": "^4.9.9"
+    "mongoose": "^4.9.9",
+    "validator": "^7.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
